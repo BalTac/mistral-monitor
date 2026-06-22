@@ -1,0 +1,29 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment secrets
+.env
+
+# Graphify outputs (rebuild locally)
+graphify-out/
+
+# Exports
+mistral_export_*.csv
+mistral_export_*.json
+mistral_models_*.csv
+mistral_models_*.json
+mistral_limits_*.csv
+mistral_limits_*.json
+
+# SQLite databases (local telemetry)
+*.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
