@@ -1,8 +1,16 @@
 # Mistral Intelligence Monitor
 
-Tool di telemetria e analisi per l'ecosistema API Mistral.
+Telemetry and analysis toolkit for the Mistral AI API ecosystem.
 Monitors rate limits, classifies models, persists history,
 detects anomalies and changes in the model inventory.
+
+## Background
+
+Around the **second quarter of 2026**, Mistral AI migrated from legacy monthly quota headers to a new per-minute rate-limit system. The old monthly plan quotas were deprecated, making it impossible to track usage against plan limits with standard tooling.
+
+This tool fills that gap by reverse-engineering the new rate-limit headers (`x-ratelimit-limit-tokens-minute`, `x-ratelimit-limit-req-minute`, etc.), persisting historical snapshots to SQLite, and adding model inventory tracking, capability fingerprinting, family normalization, and anomaly detection on top.
+
+All HTTP headers are optional — the script works even if Mistral changes their API again. The `raw_headers` forensic table logs every response header for future-proofing.
 
 ## Dependencies
 
@@ -10,7 +18,7 @@ detects anomalies and changes in the model inventory.
 - `rich`
 - `sqlite3` (stdlib)
 
-## Comandi
+## Commands
 
 ```bash
 # ─── Discovery & Inventory ───
@@ -18,28 +26,28 @@ detects anomalies and changes in the model inventory.
 # Model catalog + inventory + classification
 python mistral_monitor/monitor.py --models
 
-# Probe completo: testa tutti i modelli, registra limit, costruisce inventory
+# # Full probe: test all models, record limits, build inventory
 python mistral_monitor/monitor.py --test-all
 
-# Rate limits report (ordinato per tok/min decrescente)
+# # Rate limits report (sorted by tok/min descending)
 python mistral_monitor/monitor.py --limits-report
 
 # ─── Telemetry ───
 
-# Singola inference con rate-limit display
+# # Single inference with rate-limit display
 python mistral_monitor/monitor.py
 python mistral_monitor/monitor.py --model mistral-large-latest
 
 # ─── Statistics ───
 
-# Statistiche aggregate (finestre: today, 7d, 30d, all)
+# # Aggregate statistics (windows: today, 7d, 30d, all)
 python mistral_monitor/monitor.py --stats
 python mistral_monitor/monitor.py --stats --window 30d
 
 # v2 Enhanced per-model statistics (latency, query cost, success rate)
 python mistral_monitor/monitor.py --per-model-stats
 
-# Ultime N richieste
+# # Last N requests
 python mistral_monitor/monitor.py --history 50
 
 # Daily trend data (ready for charting)

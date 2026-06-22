@@ -22,6 +22,16 @@ Monitor, analyze, and track the Mistral AI ecosystem — rate limits, model cata
 
 <br>
 
+## 🎯 Background
+
+Around the **second quarter of 2026**, Mistral AI introduced significant changes to their API infrastructure, migrating from legacy monthly quota headers to a new per-minute rate-limit system. The old monthly plan quotas — previously retrievable via API response headers — were deprecated, making it impossible to track usage against plan limits using the standard tooling.
+
+This script was built to fill that gap. It reverse-engineers the new rate-limit headers (`x-ratelimit-limit-tokens-minute`, `x-ratelimit-limit-req-minute`, etc.), persists historical snapshots to SQLite for cumulative analysis, and adds model inventory tracking, capability fingerprinting, family normalization, and anomaly detection on top — turning a broken monitoring setup into a complete observability platform for the Mistral AI API.
+
+> **Note:** All HTTP headers are optional — the script works even if Mistral changes their API again. The `raw_headers` forensic table logs every response header for future-proofing.
+
+<br>
+
 ---
 
 ## 📸 Overview
